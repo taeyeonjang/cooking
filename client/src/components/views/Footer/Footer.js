@@ -1,14 +1,15 @@
 import React from 'react'
-import {Icon} from 'antd';
+import { FaBug } from "react-icons/fa";
 
 function Footer() {
     return (
         <div style={{
             height: '80px', display: 'flex',
-            flexDirection: 'column', alignItems: 'center',
+            alignItems: 'center',
             justifyContent: 'center', fontSize:'1rem'
         }}>
-           <p> 안녕!  <Icon type="smile" /></p>
+          <p>안녕!<FaBug /></p>
+
         </div>
     )
 }

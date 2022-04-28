@@ -1,0 +1,9 @@
+.div{
+    display:flex;
+    justify-content: center;
+}
+
+
+.input__description{
+    height:8rem;
+}
