@@ -1,24 +1,25 @@
 import React,{ useState } from 'react'
+import axios from 'axios';
 import { Button, Form, Input, Radio } from 'antd';
 import BoxPage from './Section/BoxPage';
 import { ingredi } from './Section/datas';
 import RadioCheck from './Section/RadioCheck';
 import { levels } from './Section/RadioDats';
+import DropzoneFile from '../../utils/DropzoneFile';
 
 
 //import CheckBox from './Section/CheckBox';
 
-
 const { TextArea } = Input;
 
-
-
-function UploadPage() {
+function UploadPage(props) {
 
 const [Title, setTitle] = useState("");
 const [Description, setDescription] = useState("");
-const [CheckBoxes, setCheckBoxes] = useState([])
-const [Level, setLevel] = useState(1)
+const [CheckBoxes, setCheckBoxes] = useState([]);
+const [Level, setLevel] = useState(1);
+const [Images, setImages] = useState([]);
+const [Ingredients, setIngredients] = useState([]);
 
 const onTitleChange = (e) => {  
   setTitle(e.currentTarget.value)
@@ -28,18 +29,48 @@ const onDescriptionChange = (e) => {
   setDescription(e.currentTarget.value)
 }
 
+const updateImages = (newImages) => {
+    setImages(newImages)
+}
 
-const onSumbit = () => {
-  let body= {
+const submitHandler = () => {
+  if(!Title || !Description && Ingredients === []){
+    return alert('모든 값을 넣어주세요')
+  }
+
+  //서버로 보내기 db에 저장해야하니깐
+  const body = {
+    writer: props.user.userData._id,
     title: Title,
     description: Description,
+    images: Images,
+    ingredients: Ingredients
   }
+
+  
+  axios.post('/api/product/save', body)
+  .then(response => {
+    if(response.data.success){
+      alert('업로드 성공!')
+      props.history.push('/')
+    } else {
+      alert('업로드 실패ㅠ')
+    }
+  })
 }
+
+const refreshIngredients = (newIngredients) => {
+
+  setIngredients(newIngredients)
+
+}
+
 
 
   return (
     <div style={{display:'flex', justifyContent:'center', alignItems:'center', margin:'2rem'}}>
-      <Form style={{display:'flex', flexDirection:'column', justifyContent:'center', width:'50%'}}onSubmitCapture={onSumbit}>
+      <Form onSubmitCapture={submitHandler} style={{display:'flex', flexDirection:'column', justifyContent:'center', width:'50%'}}>
+        <DropzoneFile refreshFunction={updateImages} />
         <label>Title
         <Input value={Title} onChange={onTitleChange}></Input> 
         </label> 
@@ -52,7 +83,7 @@ const onSumbit = () => {
         <div style={{fontWeight:'bold', marginTop:'1rem'}}> 재료 선택하기</div>
 
           <div>
-       {/* <CheckBox />*/} {<BoxPage ingredi={ingredi} />}
+       {/* <CheckBox />*/} {<BoxPage ingredi={ingredi} refreshFunction={refreshIngredients} />}
          </div>
        
       </div>

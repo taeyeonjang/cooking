@@ -17,6 +17,8 @@ const [Checkboxesa, setCheckboxesa] = useState([])
         newChecked.splice(currentIndex, 1)
     }
     setCheckboxesa(newChecked)
+    props.refreshFunction(newChecked)
+    
   }
   
   const renderBox = () => {
@@ -28,7 +30,7 @@ const [Checkboxesa, setCheckboxesa] = useState([])
     ))
   
   }
-  console.log(Checkboxesa)
+
   return (
     <div>{renderBox()}</div>
   )
