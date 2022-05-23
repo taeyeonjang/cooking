@@ -8,6 +8,10 @@ const mongoose = require("mongoose");
 const path = require("path");
 
 
+app.use("/sss", (req, res) => {
+  res.json({"asdlkfjasdkf":'asdfasdf'})
+})
+
 app.use(express.urlencoded({extended: true}));
 app.use('/uploads', express.static('uploads'));
 
