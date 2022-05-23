@@ -29,12 +29,16 @@ const onDescriptionChange = (e) => {
   setDescription(e.currentTarget.value)
 }
 
+const onLevel = (e) => {
+  setLevel(e.target.value)
+}
+
 const updateImages = (newImages) => {
     setImages(newImages)
 }
 
 const submitHandler = () => {
-  if(!Title || !Description && Ingredients === []){
+  if(!Title || !Description ){
     return alert('모든 값을 넣어주세요')
   }
 
@@ -44,7 +48,8 @@ const submitHandler = () => {
     title: Title,
     description: Description,
     images: Images,
-    ingredients: Ingredients
+    ingredients: Ingredients,
+    level: Level,
   }
 
   
@@ -64,7 +69,6 @@ const refreshIngredients = (newIngredients) => {
   setIngredients(newIngredients)
 
 }
-
 
 
   return (
@@ -91,7 +95,8 @@ const refreshIngredients = (newIngredients) => {
         
         <div style={{marginRight:'1rem'}}>난이도</div>
         {/*<RadioCheck  />*/}
-      <Radio.Group name="radiogroup" defaultValue={1}>
+        
+      <Radio.Group onChange={onLevel} value={Level} name="radiogroup" defaultValue={1}>
           <Radio value={1}>쉽다</Radio>
           <Radio value={2}>보통</Radio>
           <Radio value={3}>어려움</Radio>

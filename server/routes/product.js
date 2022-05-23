@@ -66,4 +66,50 @@ const storage = multer.diskStorage({
             })
         })
 
+        router.get('/getProduct', (req, res)=> {
+            //mongodb Product collection 정보 불러오기
+            Product.find()
+            .exec((err, productInfo) => {
+                if(err) res.status(400).json({ success: false, err })
+                return res.status(200).json({ success: true, productInfo })
+            })
+        })
+
+        router.get('/products_by_id', (req, res) => {
+
+            let productIds = req.query.id
+
+            Product.find({ _id: productIds })
+            .populate('writer')
+            .exec((err, product) => {
+                if(err) return res.status(400).send(err)
+                return res.status(200).send(product)
+            })
+        })
+
+        router.delete('/removeProduct/:id', async(req, res) => {
+            
+            const id = req.params.id;
+            await Product.findByIdAndDelete(id)
+            .exec((err, result) => {
+                if(err) return res.status(400).send(err)
+                return res.status(200).json({ success: true })
+            })
+               
+        })
+        router.post('/test/:id', async(req, res) => {
+            
+            const productId = req.params.id;
+            const currentUserId = req.body.currentUserId;
+            const productInfo = req.body.productInfo
+
+            if(productInfo.writer === currentUserId){
+                res.json({success: true})
+            }else {
+
+                res.json({success: false })
+            }
+            })
+            
+
 module.exports = router;
